@@ -1,22 +1,38 @@
 package com.example.splearn.domain;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.*;
 
 class MemberTest {
 
+    Member member;
+    PasswordEncoder passwordEncoder;
+
+    @BeforeEach
+    void setUp() {
+        this.passwordEncoder = new PasswordEncoder() {
+            @Override
+            public String encode(String password) {
+                return password.toUpperCase();
+            }
+
+            @Override
+            public boolean matches(String password, String passwordHash) {
+                return encode(password).equals(passwordHash);
+            }
+        };
+        member = Member.create("email@naver.com", "nickname", "password", passwordEncoder);
+    }
+
     @Test
     void createMember() {
-        var member = new Member("email@naver.com", "jong", "hyeok");
-
         assertThat(member.getStatus()).isEqualTo(MemberStatus.PENDING);
     }
 
     @Test
     void activate() {
-        var member = new Member("email", "jong", "hyeok");
-
         member.activate();
 
         assertThat(member.getStatus()).isEqualTo(MemberStatus.ACTIVE);
@@ -24,8 +40,6 @@ class MemberTest {
 
     @Test
     void activateFail() {
-        Member member = new Member("email", "jong", "hyeok");
-
         member.activate();
 
         assertThatThrownBy(member::activate)
@@ -34,7 +48,6 @@ class MemberTest {
 
     @Test
     void deactivate() {
-        var member = new Member("email", "jong", "hyeok");
         member.activate();
 
         member.deactivate();
@@ -44,8 +57,6 @@ class MemberTest {
 
     @Test
     void deactivateFail() {
-        var member = new Member("email", "jong", "hyeok");
-
         assertThatThrownBy(member::deactivate)
                 .isInstanceOf(IllegalStateException.class);
 
@@ -54,5 +65,25 @@ class MemberTest {
 
         assertThatThrownBy(member::deactivate)
                 .isInstanceOf(IllegalStateException.class);
+    }
+
+    @Test
+    void verifyPassword() {
+        assertThat(member.verifyPassword("password", passwordEncoder)).isTrue();
+        assertThat(member.verifyPassword("password12", passwordEncoder)).isFalse();
+    }
+
+    @Test
+    void changeNickname() {
+        member.changeNickname("gromit");
+
+        assertThat(member.getNickname()).isEqualTo("gromit");
+    }
+
+    @Test
+    void changePassword() {
+        member.changePassword("verysecret", passwordEncoder);
+
+        assertThat(member.verifyPassword("verysecret", passwordEncoder)).isTrue();
     }
 }
