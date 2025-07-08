@@ -23,7 +23,8 @@ class MemberTest {
                 return encode(password).equals(passwordHash);
             }
         };
-        member = Member.create("email@naver.com", "nickname", "password", passwordEncoder);
+        MemberCreateRequest createRequest = new MemberCreateRequest("email@naver.com", "nickname", "password");
+        member = Member.create(createRequest, passwordEncoder);
     }
 
     @Test
@@ -85,5 +86,18 @@ class MemberTest {
         member.changePassword("verysecret", passwordEncoder);
 
         assertThat(member.verifyPassword("verysecret", passwordEncoder)).isTrue();
+    }
+
+    @Test
+    void isActive() {
+        assertThat(member.isActive()).isFalse();
+
+        member.activate();
+
+        assertThat(member.isActive()).isTrue();
+
+        member.deactivate();
+
+        assertThat(member.isActive()).isFalse();
     }
 }
