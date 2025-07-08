@@ -1,5 +1,6 @@
 package com.example.splearn.domain;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -99,5 +100,11 @@ class MemberTest {
         member.deactivate();
 
         assertThat(member.isActive()).isFalse();
+    }
+
+    @Test
+    void invalidEmail() {
+        assertThatThrownBy(() -> Member.create(new MemberCreateRequest("ss", "nickname", "password"), passwordEncoder))
+                .isInstanceOf(IllegalArgumentException.class);
     }
 }
