@@ -15,6 +15,7 @@ import static org.springframework.util.Assert.state;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Embedded
