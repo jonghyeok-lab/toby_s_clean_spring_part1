@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.NaturalId;
 
 import static java.util.Objects.requireNonNull;
 import static org.springframework.util.Assert.state;
@@ -19,6 +20,7 @@ public class Member {
     private Long id;
 
     @Embedded
+    @NaturalId
     private Email email;
 
     private String nickname;
