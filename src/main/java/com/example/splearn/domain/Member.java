@@ -1,15 +1,23 @@
 package com.example.splearn.domain;
 
+import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import static java.util.Objects.requireNonNull;
 import static org.springframework.util.Assert.state;
 
+@Entity
 @Getter
 @ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
+    @Id
+    private Long id;
 
+    @Embedded
     private Email email;
 
     private String nickname;
@@ -17,10 +25,8 @@ public class Member {
     private String passwordHash;
 
 //    @Getter(AccessLevel.NONE) : Getter 제외
+    @Enumerated(EnumType.STRING)
     private MemberStatus status;
-
-    private Member() {
-    }
 
     public static Member register(MemberRegisterRequest registerRequest, PasswordEncoder passwordEncoder) {
         Member member = new Member();
