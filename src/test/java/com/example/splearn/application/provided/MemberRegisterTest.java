@@ -4,27 +4,26 @@ import com.example.splearn.SplearnTestConfiguration;
 import com.example.splearn.domain.*;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.ConstraintViolationException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.TestConstructor;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.annotation.Validated;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
 @Import(SplearnTestConfiguration.class)
-public record MemberRegisterTest(
-        MemberRegister memberRegister,
-        EntityManager entityManager
-) {
+class MemberRegisterTest
+{
+    @Autowired
+    MemberRegister memberRegister;
+
+    @Autowired
+    EntityManager entityManager;
+
 
     @Test
     void register() {

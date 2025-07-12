@@ -19,6 +19,8 @@ repositories {
 	mavenCentral()
 }
 
+val mockitoAgent: Configuration = configurations.create("mockitoAgent")
+
 dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -30,8 +32,11 @@ dependencies {
 	runtimeOnly("com.mysql:mysql-connector-j")
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	testImplementation("org.mockito:mockito-core:5.10.0")
+	mockitoAgent("org.mockito:mockito-core:5.10.0") { isTransitive = false}
 }
 
 tasks.test {
 	useJUnitPlatform()
+	jvmArgs("-javaagent:${mockitoAgent.asPath}")
 }
