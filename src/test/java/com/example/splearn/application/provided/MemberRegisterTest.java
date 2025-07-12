@@ -2,6 +2,7 @@ package com.example.splearn.application.provided;
 
 import com.example.splearn.SplearnTestConfiguration;
 import com.example.splearn.domain.*;
+import jakarta.persistence.EntityManager;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,7 @@ import org.springframework.test.context.TestConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -20,7 +22,8 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 @Transactional
 @Import(SplearnTestConfiguration.class)
 public record MemberRegisterTest(
-        MemberRegister memberRegister
+        MemberRegister memberRegister,
+        EntityManager entityManager
 ) {
 
     @Test
@@ -43,6 +46,19 @@ public record MemberRegisterTest(
     void memberRegisterRequestFail() {
         assertThatThrownBy(() -> memberRegister.register(new MemberRegisterRequest("toby@splearn.app", "hi", "ds")))
             .isInstanceOf(ConstraintViolationException.class);
+    }
+
+    @Test
+    void activate() {
+        var member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
+        assertThat(member.getStatus()).isEqualTo(MemberStatus.PENDING);
+
+        entityManager.flush();
+        entityManager.clear();
+
+        member = memberRegister.activate(member.getId());
+        entityManager.flush();
+        assertThat(member.getStatus()).isEqualTo(MemberStatus.ACTIVE);
     }
 }
 
