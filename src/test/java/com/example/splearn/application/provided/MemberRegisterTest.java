@@ -2,6 +2,7 @@ package com.example.splearn.application.provided;
 
 import com.example.splearn.SplearnTestConfiguration;
 import com.example.splearn.domain.*;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -10,9 +11,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
@@ -35,6 +37,12 @@ public record MemberRegisterTest(
 
         assertThatThrownBy(() -> memberRegister.register(MemberFixture.createMemberRegisterRequest()))
                 .isInstanceOf(DuplicateEmailException.class);
+    }
+
+    @Test
+    void memberRegisterRequestFail() {
+        assertThatThrownBy(() -> memberRegister.register(new MemberRegisterRequest("toby@splearn.app", "hi", "ds")))
+            .isInstanceOf(ConstraintViolationException.class);
     }
 }
 
