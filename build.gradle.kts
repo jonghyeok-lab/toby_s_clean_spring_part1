@@ -26,6 +26,7 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	implementation("org.projectlombok:lombok")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.springframework.security:spring-security-core")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	runtimeOnly("com.h2database:h2")

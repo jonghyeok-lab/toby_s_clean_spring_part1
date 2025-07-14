@@ -11,24 +11,27 @@ import static java.util.Objects.requireNonNull;
 import static org.springframework.util.Assert.state;
 
 @Entity
+@Table(name = "member", uniqueConstraints = {
+        @UniqueConstraint(name = "UK_MEMBER_EMAIL_ADDRESS", columnNames = "email_address")
+})
 @Getter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Member extends AbstractEntity {
 
     @Embedded
     @NaturalId
     private Email email;
 
+    @Column(length = 150, nullable = false)
     private String nickname;
 
+    @Column(length = 150, nullable = false)
     private String passwordHash;
 
 //    @Getter(AccessLevel.NONE) : Getter 제외
     @Enumerated(EnumType.STRING)
+    @Column(length = 50, nullable = false)
     private MemberStatus status;
 
     public static Member register(MemberRegisterRequest registerRequest, PasswordEncoder passwordEncoder) {
