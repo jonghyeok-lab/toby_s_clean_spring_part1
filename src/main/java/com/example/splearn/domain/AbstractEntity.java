@@ -14,7 +14,7 @@ import org.springframework.lang.Nullable;
 import java.util.Objects;
 
 @MappedSuperclass
-@ToString(callSuper = true)
+@ToString
 public abstract class AbstractEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

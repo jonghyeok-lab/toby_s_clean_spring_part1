@@ -1,4 +1,4 @@
-package com.example.splearn.domain;
+package com.example.splearn.domain.shared;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

@@ -1,10 +1,10 @@
-package com.example.splearn.domain;
+package com.example.splearn.domain.member;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static com.example.splearn.domain.MemberFixture.createMemberRegisterRequest;
-import static com.example.splearn.domain.MemberFixture.createPasswordEncoder;
+import static com.example.splearn.domain.member.MemberFixture.createMemberRegisterRequest;
+import static com.example.splearn.domain.member.MemberFixture.createPasswordEncoder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -24,7 +24,9 @@ class MemberTest {
 
     @Test
     void registerMember() {
+        System.out.println(member);
         assertThat(member.getStatus()).isEqualTo(MemberStatus.PENDING);
+        assertThat(member.getDetail().getRegisteredAt()).isNotNull();
     }
 
     @Test
