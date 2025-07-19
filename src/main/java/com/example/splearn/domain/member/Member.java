@@ -16,7 +16,8 @@ import static org.springframework.util.Assert.state;
 
 @Entity
 @Table(name = "member", uniqueConstraints = {
-        @UniqueConstraint(name = "UK_MEMBER_EMAIL_ADDRESS", columnNames = "email_address")
+        @UniqueConstraint(name = "UK_MEMBER_EMAIL_ADDRESS", columnNames = "email_address"),
+        @UniqueConstraint(name = "UK_MEMBER_DETAIL_ID", columnNames = "detail_id")
 })
 @Getter
 @ToString(callSuper = true, exclude = "detail")

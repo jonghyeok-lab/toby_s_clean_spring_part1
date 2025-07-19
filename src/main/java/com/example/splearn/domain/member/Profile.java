@@ -1,11 +1,12 @@
 package com.example.splearn.domain.member;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import java.util.regex.Pattern;
 
 @Embeddable
-public record Profile(String address) {
+public record Profile(@Column(length = 15) String address) {
 
     private static final Pattern PROFILE_PATTERN =
             Pattern.compile("[a-z0-9]+");
@@ -19,6 +20,6 @@ public record Profile(String address) {
     }
 
     public String url() {
-        return "@" + address;
+        return "@" + address ;
     }
 }
