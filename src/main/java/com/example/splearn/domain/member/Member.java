@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.hibernate.annotations.NaturalId;
+import org.springframework.util.Assert;
 
 import java.util.Objects;
 
@@ -75,13 +76,11 @@ public class Member extends AbstractEntity {
     }
 
     public void updateInfo(MemberInfoUpdateRequest request) {
+        Assert.state(getStatus() == MemberStatus.ACTIVE, "등록 완료 상태가 아니면 업데이트 불가하다.");
+
         this.nickname = Objects.requireNonNull(request.nickname());
 
         this.detail.updateInfo(request);
-    }
-
-    public void changeNickname(String nickname) {
-        this.nickname = requireNonNull(nickname);
     }
 
     public void changePassword(String password, PasswordEncoder passwordEncoder) {
