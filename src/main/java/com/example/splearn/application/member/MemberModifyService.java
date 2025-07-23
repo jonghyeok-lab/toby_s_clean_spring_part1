@@ -83,6 +83,6 @@ public class MemberModifyService implements MemberRegister {
 
     private void checkDuplicateEmail(MemberRegisterRequest registerRequest) {
         memberRepository.findByEmail(new Email(registerRequest.email()))
-                .ifPresent(member -> {throw new DuplicateEmailException(); });
+                .ifPresent(member -> {throw new DuplicateEmailException("중복~"); });
     }
 }
