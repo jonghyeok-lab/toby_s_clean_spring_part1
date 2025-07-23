@@ -36,6 +36,7 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 	testImplementation("org.mockito:mockito-core:5.10.0")
+	testImplementation("com.tngtech.archunit:archunit-junit5:1.4.1")
 	mockitoAgent("org.mockito:mockito-core:5.10.0") { isTransitive = false}
 }
 
